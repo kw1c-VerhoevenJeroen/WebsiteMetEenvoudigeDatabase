@@ -46,7 +46,10 @@ th
     font-size: 14px;
     margin: 8px 0 16px;
 }
-
+input, button
+{
+    padding: 8px;
+}
 .pokemonImage
 {
     height: 50px;

@@ -28,34 +28,79 @@
     }
 
     // Uitvoeren van een query
-    function executeQuery($sql)
+    function executeSelect($sql)
     {
         global $conn;
 
-        // Controleer of de verbinding geldig is
-        if (!$conn) {
-            die("Verbindingsfout: " . mysqli_connect_error());
+        if (!$conn)
+        {
+            die("Geen databaseverbinding.");
         }
 
-        // Uitvoeren van een SQL-query en controleren of het succesvol is
         $result = $conn->query($sql);
 
-        if ($result === false) {
-            // Foutcontrole voor de query
-            die("Query-fout: " . $conn->error);
+        if (!$result)
+        {
+            die("Query fout: " . $conn->error);
         }
 
-        // Controleer of er resultaten zijn en retourneer de data als een array
-        if ($result instanceof mysqli_result && $result->num_rows > 0) {
-            $data = [];
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-            return $data;
-        } else {
-            // Geen resultaten gevonden
-            return [];
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /*
+     * Functie die een selecyt doet met 1 parameter
+     */
+    function executePreparedSelect1(string $sql, string $type = "", $param = null): array
+    {
+        global $conn;
+
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Prepare-fout: " . $conn->error);
         }
+
+        // Alleen binden als er echt een parameter is meegegeven
+        if ($param !== null) {
+            $stmt->bind_param($type, $param); // bv. "s", $name
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if (!$result) {
+            die("get_result() niet beschikbaar.");
+        }
+
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $data ?: [];
+    }
+
+    function executePreparedInsertPokemon($name, $number, $type1, $type2, $ability)
+    {
+        global $conn;
+
+        $sql = "INSERT INTO pokemon
+                (name, number, type1, type2, ability)
+                VALUES (?, ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) {
+            die("Prepare fout: " . $conn->error);
+        }
+
+        // s = string, i = integer
+        $stmt->bind_param("sisss", $name, $number, $type1, $type2, $ability);
+
+        $stmt->execute();
+
+        if ($stmt->error) {
+            die("Execute fout: " . $stmt->error);
+        }
+
+        $stmt->close();
     }
 
     // Uitvoeren van een insert-query

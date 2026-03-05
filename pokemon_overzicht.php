@@ -29,11 +29,11 @@ if (count($conditions) > 0) {
 $query .= " ORDER BY name";
 
 /* 5) Query uitvoeren */
-$result = executeQuery($query);
+$result = executeSelect($query);
 
 /* 6) Unieke lijsten maken voor dropdowns */
-$types = executeQuery("SELECT DISTINCT type1 FROM pokemon ORDER BY type1");
-$abilities = executeQuery("SELECT DISTINCT ability FROM pokemon ORDER BY ability");
+$types = executeSelect("SELECT DISTINCT type1 FROM pokemon ORDER BY type1");
+$abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY ability");
 ?>
 <!doctype html>
 <html lang="nl">
