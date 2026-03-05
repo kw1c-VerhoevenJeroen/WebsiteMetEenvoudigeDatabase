@@ -5,23 +5,31 @@
 
     $zoekWaarde = $_GET['zoek'] ?? '';
 
+//    if(!empty($zoekWaarde))
+//    {
+//        $sql = "SELECT *
+//                FROM pokemon
+//                WHERE name LIKE '%" . $zoekWaarde . "%';
+//    }
+//    else
+//    {
+//        $sql = "SELECT * FROM pokemon";
+//    }
+
     if(!empty($zoekWaarde))
     {
-        $sql = "SELECT * 
-                FROM pokemon 
-                WHERE name LIKE '%" . $zoekWaarde . "%' 
-                ORDER BY name DESC
-                LIMIT 50    
-                OFFSET 0";
+        $sql = "SELECT *
+                FROM pokemon
+                WHERE name LIKE ?";
 
-//        echo $sql;
+        $result = executePreparedSelect1($sql, "s", "%$zoekWaarde%");
     }
     else
     {
         $sql = "SELECT * FROM pokemon";
+        $result = executePreparedSelect1($sql, "", null);
     }
 
-    $result = executeSelect($sql);
 ?>
 <html>
 <head>

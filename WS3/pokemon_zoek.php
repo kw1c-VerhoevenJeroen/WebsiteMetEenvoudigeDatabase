@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/mysql_functies.php';
+require_once '../includes/mysql-functions.php';
 
 // Maak verbinding (pas db-naam aan als jouw functie dat zo verwacht)
 startConnection('pokemondb');
