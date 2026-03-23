@@ -118,6 +118,26 @@
         }
     }
 
+    // Uitvoeren van een insert-query
+    function executeDeleteQuery($number)
+    {
+        global $conn;
+
+        $sql = "DELETE FROM pokemon WHERE number = ?";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bind_param("s", $number);
+
+        $stmt->execute();
+
+        if ($stmt->error) {
+            die("Execute fout: " . $stmt->error);
+        }
+
+        $stmt->close();
+    }
+
     // Uitvoeren van een update-query
     function executeUpdateQuery($query)
     {
