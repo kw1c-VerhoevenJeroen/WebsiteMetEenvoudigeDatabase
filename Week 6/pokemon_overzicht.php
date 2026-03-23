@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/mysql-functions.php';
+require_once '../includes/mysql-functions.php';
 
 startConnection('pokemondb');
 
@@ -40,7 +40,7 @@ $abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY abilit
 <head>
     <meta charset="utf-8">
     <title>Pokémon overzicht</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -48,7 +48,7 @@ $abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY abilit
 <p class="muted">Filter op type en/of ability. Laat leeg voor alles.</p>
 
 <!-- FILTERFORMULIER -->
-<form method="get" action="">
+<form method="get" action="" class="filterForm">
     <div>
         <label for="type">Type</label>
         <select name="type" id="type">
@@ -84,6 +84,8 @@ $abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY abilit
     </div>
 </form>
 
+<a href="pokemon_toevoegen.php">Toevoegen Pokémon</a>
+
 <!-- RESULTATEN -->
 <table>
     <tr>
@@ -93,6 +95,7 @@ $abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY abilit
         <th>Type1</th>
         <th>Type2</th>
         <th>Ability</th>
+        <th>Verwijder</th>
     </tr>
 
     <?php if (count($result) === 0): ?>
@@ -108,6 +111,11 @@ $abilities = executeSelect("SELECT DISTINCT ability FROM pokemon ORDER BY abilit
                 <td><?= $row['type1'] ?></td>
                 <td><?= $row['type2'] ?? '-' ?></td>
                 <td><?= $row['ability'] ?></td>
+                <td>
+                    <a href="delete_pokemon.php?number=<?= $row['number']; ?>" onclick="return confirm('Weet u zeker dat u deze regel wilt verwijderen?');">
+                        Verwijder
+                    </a>
+                </td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>

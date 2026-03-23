@@ -6,6 +6,11 @@ body
 form
 {
     margin-bottom: 16px;
+}
+
+.filterForm
+{
+    margin-bottom: 16px;
     display: flex;
     gap: 12px;
     align-items: end;

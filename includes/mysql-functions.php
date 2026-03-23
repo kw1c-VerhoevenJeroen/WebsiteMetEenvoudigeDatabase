@@ -77,13 +77,13 @@
         return $data ?: [];
     }
 
-    function executePreparedInsertPokemon($name, $number, $type1, $type2, $ability)
+    function executePreparedInsertPokemon($name, $number, $type1, $type2, $ability, $image)
     {
         global $conn;
 
         $sql = "INSERT INTO pokemon
-                (name, number, type1, type2, ability)
-                VALUES (?, ?, ?, ?, ?)";
+                (name, number, type1, type2, ability, picture)
+                VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
 
@@ -92,7 +92,7 @@
         }
 
         // s = string, i = integer
-        $stmt->bind_param("sisss", $name, $number, $type1, $type2, $ability);
+        $stmt->bind_param("sissss", $name, $number, $type1, $type2, $ability, $image);
 
         $stmt->execute();
 
